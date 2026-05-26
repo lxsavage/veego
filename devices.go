@@ -75,10 +75,7 @@ func (d Device) String() string {
 		caps = append(caps, c.Instance)
 	}
 	return fmt.Sprintf("%s  %s  %s  %s\n  Capabilities: %s",
-		d.SKU,
-		d.MACAddress,
-		d.Type,
-		d.Name,
+		d.SKU, d.MACAddress, d.Type, d.Name,
 		strings.Join(caps, ", "),
 	)
 }

@@ -1,8 +1,6 @@
 package veego
 
-import (
-	"strconv"
-)
+import "strconv"
 
 type fluentChain struct {
 	filters     []fluentFilter
