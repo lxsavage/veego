@@ -1,4 +1,4 @@
-module logansavage.dev/veego
+module github.com/lxsavage/veego
 
 go 1.26.3
 

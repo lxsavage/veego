@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
-	"logansavage.dev/veego"
+	"github.com/lxsavage/veego"
 )
 
 func main() {
