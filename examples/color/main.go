@@ -8,20 +8,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
 	"github.com/lxsavage/veego"
 )
 
+const key = "GOVEE_KEY"
+
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal(err)
-	}
-
-	key := os.Getenv("GOVEE_KEY")
-	if len(key) == 0 {
-		log.Fatal("GOVEE_KEY environment variable not defined!")
-	}
-
 	// Create a new controller to handle device interaction using the default HTTP
 	// client
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
