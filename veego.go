@@ -1,3 +1,4 @@
+// An unofficial builder-style library for interacting with Govee devices
 package veego
 
 import (

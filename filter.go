@@ -3,7 +3,7 @@ package veego
 import "regexp"
 
 // Filter devices down by name
-func (f fluentChain) NameMatches(regex string) fluentChain {
+func (f cmdBuilderChain) NameMatches(regex string) cmdBuilderChain {
 	filter := func(c Controller, devs []Device) []Device {
 		re, err := regexp.Compile(regex)
 		if err != nil {
@@ -24,12 +24,17 @@ func (f fluentChain) NameMatches(regex string) fluentChain {
 	return f
 }
 
-// Filters to devices of the specified type
-func (f fluentChain) TypeIs(t DeviceType) fluentChain {
+// Filters to devices of the specified type(s)
+func (f cmdBuilderChain) TypeIs(types ...DeviceType) cmdBuilderChain {
+	allowedTypes := map[DeviceType]bool{}
+	for _, t := range types {
+		allowedTypes[t] = true
+	}
+
 	filter := func(c Controller, devs []Device) []Device {
 		newDevs := []Device{}
 		for _, d := range devs {
-			if d.Type == t {
+			if _, ok := allowedTypes[d.Type]; ok {
 				newDevs = append(newDevs, d)
 			}
 		}
@@ -42,11 +47,15 @@ func (f fluentChain) TypeIs(t DeviceType) fluentChain {
 }
 
 // Filters to the device that has the specified MAC address
-func (f fluentChain) MacIs(s string) fluentChain {
+func (f cmdBuilderChain) MacIs(addrs ...string) cmdBuilderChain {
+	allowedAddrs := map[string]bool{}
+	for _, a := range addrs {
+		allowedAddrs[a] = true
+	}
 	filter := func(c Controller, devs []Device) []Device {
 		newDevs := []Device{}
 		for _, d := range devs {
-			if d.MACAddress == s {
+			if _, ok := allowedAddrs[d.MACAddress]; ok {
 				newDevs = append(newDevs, d)
 			}
 		}
@@ -59,7 +68,7 @@ func (f fluentChain) MacIs(s string) fluentChain {
 }
 
 // Take the first count devices and discard the rest
-func (f fluentChain) Take(count int) fluentChain {
+func (f cmdBuilderChain) Take(count int) cmdBuilderChain {
 	filter := func(c Controller, devs []Device) []Device {
 		newDevs := []Device{}
 		if count == 0 {

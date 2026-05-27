@@ -1,7 +1,7 @@
 package veego
 
 // Turn the device(s) off
-func (fl fluentChain) Off() fluentChain {
+func (fl cmdBuilderChain) Off() cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeOnOff,
 		Instance: "powerSwitch",
@@ -10,7 +10,7 @@ func (fl fluentChain) Off() fluentChain {
 }
 
 // Turn the device(s) on
-func (fl fluentChain) On() fluentChain {
+func (fl cmdBuilderChain) On() cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeOnOff,
 		Instance: "powerSwitch",
@@ -19,7 +19,7 @@ func (fl fluentChain) On() fluentChain {
 }
 
 // Adjust the brightness to a value between 0-100
-func (fl fluentChain) Brightness(b percentage) fluentChain {
+func (fl cmdBuilderChain) Brightness(b percentage) cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeRange,
 		Instance: "brightness",

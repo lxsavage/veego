@@ -5,34 +5,34 @@ import (
 	"strconv"
 )
 
-type fluentChain struct {
-	filters     []fluentFilter
-	actions     []fluentAction
+type cmdBuilderChain struct {
+	filters     []cmdBuilderFilter
+	actions     []cmdBuilderAction
 	memoDevices []Device
 	controller  *Controller
 	memoized    bool
 }
 
-type fluentCommand func(*fluentChain) *fluentChain
-type fluentAction func(Controller, []Device) ([]Device, error)
-type fluentFilter func(Controller, []Device) []Device
+type cmdBuilderCommand func(*cmdBuilderChain) *cmdBuilderChain
+type cmdBuilderAction func(Controller, []Device) ([]Device, error)
+type cmdBuilderFilter func(Controller, []Device) []Device
 
-// Start a fluent command chain with the list of all accessible devices
-func (c *Controller) Devices() fluentChain {
-	return fluentChain{
+// Start a command chain with the list of all accessible devices
+func (c *Controller) Devices() cmdBuilderChain {
+	return cmdBuilderChain{
 		controller: c,
-		actions:    []fluentAction{},
+		actions:    []cmdBuilderAction{},
 	}
 }
 
-// See what devices would be affected by a fluent chain
-func (f fluentChain) Query() []Device {
+// See what devices would be affected by a command chain
+func (f cmdBuilderChain) Query() []Device {
 	var devices []Device
 	if f.memoized {
 		devices = f.memoDevices
 	} else {
 		var err error
-		devices, err = f.controller.FindDevices()
+		devices, err = f.controller.findDevices()
 		if err != nil {
 			return nil
 		}
@@ -53,10 +53,10 @@ func (f fluentChain) Query() []Device {
 	return devices
 }
 
-// Apply and cache the device/filter portion of the fluent chain
-func (f fluentChain) Memoize() fluentChain {
+// Apply and cache the device/filter portion of the command chain
+func (f cmdBuilderChain) Memoize() cmdBuilderChain {
 	if !f.memoized {
-		devices, err := f.controller.FindDevices()
+		devices, err := f.controller.findDevices()
 		if err != nil {
 			f.memoDevices = []Device{}
 			return f
@@ -67,20 +67,20 @@ func (f fluentChain) Memoize() fluentChain {
 	for _, filter := range f.filters {
 		f.memoDevices = filter(*f.controller, f.memoDevices)
 	}
-	f.filters = []fluentFilter{}
+	f.filters = []cmdBuilderFilter{}
 	f.memoized = true
 	return f
 }
 
-// Execute a fluent command chain, returning an error and stopping if there
+// Execute a command command chain, returning an error and stopping if there
 // are any issues with the commands in the chain
-func (f fluentChain) Exec() error {
+func (f cmdBuilderChain) Exec() error {
 	var devices []Device
 	if f.memoized {
 		devices = f.memoDevices
 	} else {
 		var err error
-		devices, err = f.controller.FindDevices()
+		devices, err = f.controller.findDevices()
 		if err != nil {
 			return err
 		}

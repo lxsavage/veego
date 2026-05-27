@@ -28,6 +28,7 @@ func main() {
 		Temperature(veego.K(6000)).
 		Sleep(2 * time.Second).
 		Temperature(veego.K(2000)).
+		Sleep(2 * time.Second).
 		Temperature(veego.K(4000)).
 		Sleep(2 * time.Second).
 		Off().

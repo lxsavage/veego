@@ -43,7 +43,7 @@ func (c Controller) sendDevicePayload(d Device, pl DevicePayload) error {
 //
 // See https://developer.govee.com/reference/control-you-devices for more
 // details.
-func (fl fluentChain) SendPayload(pl DevicePayload) fluentChain {
+func (fl cmdBuilderChain) SendPayload(pl DevicePayload) cmdBuilderChain {
 	cmd := func(c Controller, devs []Device) ([]Device, error) {
 		for i, d := range devs {
 			if err := c.sendDevicePayload(d, pl); err != nil {

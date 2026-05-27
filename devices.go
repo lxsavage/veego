@@ -57,9 +57,7 @@ type Device struct {
 	Capabilities []deviceCapability
 }
 
-// Get a list of all devices accessible. This is a fallback function and should
-// only be used if the fluent version does not cover the needed use.
-func (c Controller) FindDevices() ([]Device, error) {
+func (c Controller) findDevices() ([]Device, error) {
 	res, err := Request[struct {
 		Data []Device
 	}](c, "GET", "/user/devices", nil)

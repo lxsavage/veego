@@ -1,7 +1,7 @@
 package veego
 
 // Set the color of the device(s)
-func (fl fluentChain) Color(c colorRGB) fluentChain {
+func (fl cmdBuilderChain) Color(c colorRGB) cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeColorSetting,
 		Instance: "colorRgb",
@@ -10,7 +10,7 @@ func (fl fluentChain) Color(c colorRGB) fluentChain {
 }
 
 // Set the color temperature of the device(s)
-func (fl fluentChain) Temperature(t colorTemp) fluentChain {
+func (fl cmdBuilderChain) Temperature(t colorTemp) cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeColorSetting,
 		Instance: "colorTemperatureK",
