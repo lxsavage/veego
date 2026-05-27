@@ -41,13 +41,21 @@ func main() {
 	}
 
 	// Get the status of the first device returned
-	states, err := devices[0].Stat(controller)
+	capabilities, err := devices[0].Stat(controller)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Print out the status
-	for _, s := range states {
-		fmt.Printf("%v\n", s)
+	// List all capabilities available
+	for _, s := range capabilities {
+		fmt.Println(s.String())
+	}
+
+	// Get the state of a specific capability on the device
+	if p, ok := capabilities.GetState("powerSwitch"); ok {
+		// Convert the JSON number to a boolean; it must be done this way due to how
+		// JSON is deserialized internally
+		isOn := p.(float64) != 0
+		fmt.Printf("The state of the power is: %t\n", isOn)
 	}
 }

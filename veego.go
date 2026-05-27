@@ -105,7 +105,6 @@ func Request[T any](c Controller, method, endpoint string, content []byte) (*T, 
 		return nil, nil
 	}
 
-	// TODO - evaluate if there will ever need to be a non-JSON response from this API
 	if res.Header.Get("Content-Type") != "application/json" {
 		return nil, errors.New("unsupported response type " + res.Header.Get("Content-Type"))
 	}

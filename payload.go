@@ -33,7 +33,16 @@ func (c Controller) sendDevicePayload(d Device, pl DevicePayload) error {
 	return nil
 }
 
-// Send a raw device payload to the API
+// Send a raw device payload to the API; should only be used if the needed
+// functionality is not yet implemented.
+//
+// Note that this payload is sent as the "capability" section of the following
+// API method:
+//
+// POST /router/api/v1/device/control
+//
+// See https://developer.govee.com/reference/control-you-devices for more
+// details.
 func (fl fluentChain) SendPayload(pl DevicePayload) fluentChain {
 	cmd := func(c Controller, devs []Device) ([]Device, error) {
 		for i, d := range devs {
@@ -41,7 +50,6 @@ func (fl fluentChain) SendPayload(pl DevicePayload) fluentChain {
 				return devs, errors.New(fmt.Sprintf("%d, %v", i, err))
 			}
 		}
-
 		return devs, nil
 	}
 

@@ -30,10 +30,11 @@ type deviceCapability struct {
 	}
 }
 
+type deviceCapabilityStates []deviceCapabilityState
 type deviceCapabilityState struct {
 	Type     DeviceCapabilityType
 	Instance string
-	State    any
+	State    struct{ Value any }
 }
 
 type DevicePayload struct {
@@ -74,13 +75,14 @@ func (d Device) String() string {
 	for _, c := range d.Capabilities {
 		caps = append(caps, c.Instance)
 	}
-	return fmt.Sprintf("%s  %s  %s  %s\n  Capabilities: %s",
-		d.SKU, d.MACAddress, d.Type, d.Name,
+	return fmt.Sprintf("<SKU: %s, MACAddress: %s, Name: %s ,Type: %s, Capabilities: [%s]>",
+		d.SKU, d.MACAddress, d.Name, d.Type,
 		strings.Join(caps, ", "),
 	)
 }
 
-func (d Device) Stat(c *Controller) ([]deviceCapabilityState, error) {
+// Get the status of the device as an array of capabilities and their states
+func (d Device) Stat(c *Controller) (deviceCapabilityStates, error) {
 	body, err := json.Marshal(map[string]any{
 		"requestId": uuid.NewString(),
 		"payload": map[string]string{
@@ -102,4 +104,18 @@ func (d Device) Stat(c *Controller) ([]deviceCapabilityState, error) {
 	}
 
 	return status.Payload.Capabilities, nil
+}
+
+func (dcs deviceCapabilityState) String() string {
+	return fmt.Sprintf("<Name: %s, Type: %s, State: %v>", dcs.Instance, dcs.Type, dcs.State)
+}
+
+// Returns the state of a specific capability by its name; the second value is true if found, otherwise false
+func (dc deviceCapabilityStates) GetState(key string) (any, bool) {
+	for _, cap := range dc {
+		if cap.Instance == key {
+			return cap.State.Value, true
+		}
+	}
+	return nil, false
 }
