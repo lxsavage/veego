@@ -9,7 +9,6 @@ Turning off the lights is as simple as:
 ```go
 import (
 	"log"
-	"log/slog"
 	"net/http"
 
 	"github.com/lxsavage/veego"
