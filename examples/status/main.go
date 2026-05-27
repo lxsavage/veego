@@ -1,6 +1,4 @@
-// Checks the status of the first device it sees
-//
-// Created by Logan Savage
+// Checks and prints the status of the first device it sees
 package main
 
 import (
@@ -24,8 +22,8 @@ func main() {
 		log.Fatal("GOVEE_KEY environment variable not defined!")
 	}
 
-	// Create a new controller to handle device interaction using the default
-	// HTTP client
+	// Create a new controller to handle device interaction using the default HTTP
+	// client
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	controller, err := veego.NewController(key, logger).
 		WithClient(http.DefaultClient).
@@ -37,7 +35,8 @@ func main() {
 	// Get the list of all devices
 	devices := controller.Devices().Query()
 	if len(devices) == 0 {
-		log.Fatalln("No devices found.")
+		fmt.Println("No devices found.")
+		os.Exit(0)
 	}
 
 	// Get the status of the first device returned

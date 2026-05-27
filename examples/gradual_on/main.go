@@ -1,7 +1,5 @@
 // Gradually brightens all light devices seen from 0-100% over the course of
 // 20 seconds
-//
-// Created by Logan Savage
 package main
 
 import (
@@ -26,8 +24,8 @@ func main() {
 		log.Fatal("GOVEE_KEY environment variable not defined!")
 	}
 
-	// Create a new controller to handle device interaction using the default
-	// HTTP client
+	// Create a new controller to handle device interaction using the default HTTP
+	// client
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	controller, err := veego.NewController(key, logger).
 		WithClient(http.DefaultClient).

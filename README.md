@@ -18,8 +18,8 @@ import (
 const key = "<GOVEE API KEY>"
 
 func main() {
-	// Create a new controller to handle device interaction using the default
-	// HTTP client
+	// Create a new controller to handle device interaction using the default HTTP
+	// client
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	controller, err := veego.NewController(key, logger).
 		WithClient(http.DefaultClient).
@@ -28,9 +28,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Get all light devices and turn them off
+	// Get all light devices whose names start with "Living Room" and turn them off
 	err = controller.Devices().
 		TypeIs(veego.DeviceLight).
+		NameMatches("^Living Room").
 		Off().
 		Exec()
 	if err != nil {
@@ -43,7 +44,7 @@ Additional examples can be found under the example programs in `examples/`.
 
 ### Structure
 
-This library is built around a builder syntax, with two sections:
+This library is designed around a builder syntax, with two sections:
 
 1. Filters, which sequentially filter down the devices shown
 2. Actions, which are a sequence of actions to perform on the devices that pass
@@ -57,6 +58,16 @@ err := controller.Devices().
   <actionFunctions>.
   Exec()
 ```
+
+Applying this to the lights off example:
+
+```go
+err = controller.Devices().
+	TypeIs(veego.DeviceLight).   // Filter function
+	NameMatches("^Living Room"). // Filter function
+	Off().                       // Action function
+	Exec()
+````
 
 ### Looping and Memoization
 

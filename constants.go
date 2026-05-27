@@ -4,6 +4,10 @@ type DeviceCapabilityType string
 type DeviceType string
 
 const (
+	apiV1 = "https://openapi.api.govee.com/router/api/v1"
+)
+
+const (
 	TypeOnOff               DeviceCapabilityType = "devices.capabilities.on_off"
 	TypeRange               DeviceCapabilityType = "devices.capabilities.range"
 	TypeColorSetting        DeviceCapabilityType = "devices.capabilities.color_setting"

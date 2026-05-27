@@ -12,8 +12,6 @@ import (
 	"net/url"
 )
 
-const apiV1 = "https://openapi.api.govee.com/router/api/v1"
-
 type Controller struct {
 	active bool
 	key    string
@@ -46,15 +44,6 @@ func (c *Controller) Init() (*Controller, error) {
 	c.active = true
 	return c, nil
 }
-
-// For future use
-// func (c *Controller) Close() error {
-// 	if !c.active {
-// 		return errors.New("instance already closed")
-// 	}
-// 	c.active = false
-// 	return nil
-// }
 
 // Send a raw request to the Govee API and return the response deserialized as
 // T. this should not be used unless the needed functionality is not
