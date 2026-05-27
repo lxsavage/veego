@@ -4,7 +4,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"log/slog"
 	"net/http"
 	"os"
 
@@ -16,8 +15,7 @@ const key = "GOVEE_KEY"
 func main() {
 	// Create a new controller to handle device interaction using the default HTTP
 	// client
-	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
-	controller, err := veego.NewController(key, logger).
+	controller, err := veego.NewController(key).
 		WithClient(http.DefaultClient).
 		Init()
 	if err != nil {

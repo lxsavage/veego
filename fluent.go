@@ -1,6 +1,9 @@
 package veego
 
-import "strconv"
+import (
+	"errors"
+	"strconv"
+)
 
 type fluentChain struct {
 	filters     []fluentFilter
@@ -99,12 +102,11 @@ func (f fluentChain) Exec() error {
 		var err error
 		devices, err = cmd(*f.controller, devices)
 		if err != nil {
-			f.controller.logger.Error(
+			return errors.New(
 				"failed to apply fluent query " +
 					strconv.Itoa(i) +
 					": " + err.Error(),
 			)
-			return err
 		}
 	}
 

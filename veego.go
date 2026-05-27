@@ -4,25 +4,20 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
-	"log/slog"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 )
 
 type Controller struct {
 	active bool
 	key    string
-	logger *slog.Logger
 	http   *http.Client
 }
 
-func NewController(apiKey string, logger *slog.Logger) *Controller {
+func NewController(apiKey string) *Controller {
 	return &Controller{
-		key:    apiKey,
-		logger: logger,
+		key: apiKey,
 	}
 }
 
@@ -57,8 +52,6 @@ func Request[T any](c Controller, method, endpoint string, content []byte) (*T, 
 	if err != nil {
 		return nil, err
 	}
-	c.logger.Debug(fmt.Sprintf("%s %s", method, uri))
-	c.logger.Debug(fmt.Sprintf("Content: %v\n", content))
 
 	var body io.Reader = nil
 	if content != nil {
@@ -73,20 +66,16 @@ func Request[T any](c Controller, method, endpoint string, content []byte) (*T, 
 
 	res, err := c.http.Do(req)
 	if err != nil {
-		c.logger.Error("request failed", "error", err)
 		return nil, err
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode/100 != 2 {
-		r, _ := httputil.DumpRequestOut(req, true)
-		fmt.Printf("%s\n", r)
 		return nil, errors.New("non-success status: " + res.Status)
 	}
 
 	response, err := io.ReadAll(res.Body)
 	if err != nil {
-		c.logger.Warn("unable to read body, treating as if there isn't one", "warning", err)
 		return nil, nil
 	}
 

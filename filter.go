@@ -7,7 +7,6 @@ func (f fluentChain) NameMatches(regex string) fluentChain {
 	filter := func(c Controller, devs []Device) []Device {
 		re, err := regexp.Compile(regex)
 		if err != nil {
-			f.controller.logger.Error("Invalid regular expression: " + regex)
 			return []Device{}
 		}
 
