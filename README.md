@@ -12,7 +12,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"logansavage.dev/veego"
+	"github.com/lxsavage/veego"
 )
 
 const key = "<GOVEE API KEY>"
