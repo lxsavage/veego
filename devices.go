@@ -73,7 +73,7 @@ func (d Device) String() string {
 	for _, c := range d.Capabilities {
 		caps = append(caps, c.Instance)
 	}
-	return fmt.Sprintf("<SKU: %s, MACAddress: %s, Name: %s ,Type: %s, Capabilities: [%s]>",
+	return fmt.Sprintf("<SKU: %s, MACAddress: %s, Name: %s, Type: %s, Capabilities: [%s]>",
 		d.SKU, d.MACAddress, d.Name, d.Type,
 		strings.Join(caps, ", "),
 	)
