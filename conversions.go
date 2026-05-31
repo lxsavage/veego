@@ -9,6 +9,14 @@ func RGB(r, g, b uint8) colorRGB {
 	return colorRGB((int(r) << 16) | (int(g) << 8) | int(b))
 }
 
+// Get the RGB components of a color
+func (clr colorRGB) Components() (uint8, uint8, uint8) {
+	r := uint8(clr >> 16)
+	g := uint8((clr >> 8) & 255)
+	b := uint8(clr & 255)
+	return r, g, b
+}
+
 // Get a number as a Kelvin temperature
 func K(k int) colorTemp {
 	if k < 2000 {

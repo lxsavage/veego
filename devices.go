@@ -117,3 +117,31 @@ func (dc deviceCapabilityStates) GetState(key string) (any, bool) {
 	}
 	return nil, false
 }
+
+func (dc deviceCapabilityStates) IsOn() bool {
+	p, ok := dc.GetState("powerSwitch")
+	if !ok {
+		return false
+	}
+
+	return p.(float64) != 0
+}
+
+func (dc deviceCapabilityStates) IsOnline() bool {
+	o, ok := dc.GetState("online")
+	if !ok {
+		return false
+	}
+
+	return o.(bool)
+}
+
+func (dc deviceCapabilityStates) Color() (uint8, uint8, uint8, bool) {
+	o, ok := dc.GetState("colorRgb")
+	if !ok {
+		return 0, 0, 0, false
+	}
+
+	r, g, b := colorRGB(o.(float64)).Components()
+	return r, g, b, true
+}

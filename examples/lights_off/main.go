@@ -2,6 +2,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"net/http"
 
@@ -16,7 +17,9 @@ func main() {
 	controller, err := veego.NewController(key).
 		WithClient(http.DefaultClient).
 		Init()
-	if err != nil {
+	if errors.Is(err, veego.ErrInvalidKey) {
+		log.Fatal("the key at the top of the file is invalid; check it and try again")
+	} else if err != nil {
 		log.Fatal(err)
 	}
 

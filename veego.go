@@ -30,7 +30,11 @@ func (c *Controller) WithClient(h *http.Client) *Controller {
 // Initialize the controller and get it ready to interact with the API
 func (c *Controller) Init() (*Controller, error) {
 	if c.active {
-		return c, errors.New("instance already open")
+		return c, ErrInstanceAlreadyOpen
+	}
+
+	if _, err := c.findDevices(); err != nil {
+		return c, ErrInvalidKey
 	}
 
 	if c.http == nil {
@@ -46,7 +50,7 @@ func (c *Controller) Init() (*Controller, error) {
 // implemented elsewhere
 func Request[T any](c Controller, method, endpoint string, content []byte) (*T, error) {
 	if !c.active {
-		return nil, errors.New("controller not active")
+		return nil, ErrInstanceNotOpen
 	}
 
 	uri, err := url.JoinPath(apiV1, endpoint)
