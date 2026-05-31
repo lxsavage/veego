@@ -33,6 +33,7 @@ func main() {
 		Color(veego.RGB(0, 255, 0)).
 		Sleep(2 * time.Second).
 		Color(veego.RGB(0, 0, 255)).
+		Sleep(2 * time.Second).
 		Off().
 		Exec()
 	if err != nil {
