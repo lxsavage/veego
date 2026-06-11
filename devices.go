@@ -154,6 +154,6 @@ func (d Device) AsBuilder(c *Controller) cmdBuilderChain {
 		actions:     []cmdBuilderAction{},
 		memoDevices: []Device{d},
 		controller:  c,
-		memoized:    false,
+		memoized:    true,
 	}
 }
