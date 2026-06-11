@@ -33,7 +33,9 @@ func (c *Controller) Init() (*Controller, error) {
 		return c, ErrInstanceAlreadyOpen
 	}
 
+	c.active = true
 	if _, err := c.findDevices(); err != nil {
+		c.active = false
 		return c, ErrInvalidKey
 	}
 
@@ -41,7 +43,6 @@ func (c *Controller) Init() (*Controller, error) {
 		c.http = http.DefaultClient
 	}
 
-	c.active = true
 	return c, nil
 }
 
