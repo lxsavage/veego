@@ -145,3 +145,13 @@ func (dc deviceCapabilityStates) Color() (uint8, uint8, uint8, bool) {
 	r, g, b := colorRGB(o.(float64)).Components()
 	return r, g, b, true
 }
+
+func (d Device) AsBuilder(c *Controller) cmdBuilderChain {
+	return cmdBuilderChain{
+		filters:     []cmdBuilderFilter{},
+		actions:     []cmdBuilderAction{},
+		memoDevices: []Device{d},
+		controller:  c,
+		memoized:    false,
+	}
+}
