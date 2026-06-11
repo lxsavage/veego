@@ -146,6 +146,8 @@ func (dc deviceCapabilityStates) Color() (uint8, uint8, uint8, bool) {
 	return r, g, b, true
 }
 
+// Converts a Device into a builder chain that filters down to only that device;
+// for use with fluent actions
 func (d Device) AsBuilder(c *Controller) cmdBuilderChain {
 	return cmdBuilderChain{
 		filters:     []cmdBuilderFilter{},
