@@ -1,8 +1,8 @@
 package veego
 
 // Turn the device off
-func (d Device) Off(c Controller) error {
-	return d.SendPayload(c, DevicePayload{
+func (d Device) Off(c *Controller) error {
+	return d.SendPayload(*c, DevicePayload{
 		Type:     TypeOnOff,
 		Instance: "powerSwitch",
 		Value:    0,
@@ -10,8 +10,8 @@ func (d Device) Off(c Controller) error {
 }
 
 // Turn the device on
-func (d Device) On(c Controller) error {
-	return d.SendPayload(c, DevicePayload{
+func (d Device) On(c *Controller) error {
+	return d.SendPayload(*c, DevicePayload{
 		Type:     TypeOnOff,
 		Instance: "powerSwitch",
 		Value:    1,
@@ -19,8 +19,8 @@ func (d Device) On(c Controller) error {
 }
 
 // Adjust the brightness to a value between 0-100
-func (d Device) Brightness(c Controller, b percentage) error {
-	return d.SendPayload(c, DevicePayload{
+func (d Device) Brightness(c *Controller, b percentage) error {
+	return d.SendPayload(*c, DevicePayload{
 		Type:     TypeRange,
 		Instance: "brightness",
 		Value:    int(b),

@@ -1,12 +1,21 @@
 package veego
 
-func (d Device) Color(c Controller, color colorRGB) error {
-	// return d.SendPayload(c, DevicePayload{
-	// 	Type:     TypeColorSetting,
-	// 	Instance: "colorRgb",
-	// 	Value:    int(c),
-	// })
-	return nil
+// Set the color of the device
+func (d Device) Color(c *Controller, color colorRGB) error {
+	return d.SendPayload(*c, DevicePayload{
+		Type:     TypeColorSetting,
+		Instance: "colorRgb",
+		Value:    int(color),
+	})
+}
+
+// Set the color temperature of the device
+func (d Device) Temperature(c *Controller, t colorTemp) error {
+	return d.SendPayload(*c, DevicePayload{
+		Type:     TypeColorSetting,
+		Instance: "colorTemperatureK",
+		Value:    int(t),
+	})
 }
 
 // Set the color of the device(s)
