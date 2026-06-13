@@ -1,6 +1,6 @@
 # VeeGo: An Unofficial GO Library for Govee Devices
 
-A builder-style library for interacting with Govee devices
+A library for interacting with Govee devices
 
 ## Usage
 
