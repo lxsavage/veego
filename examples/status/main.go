@@ -52,8 +52,12 @@ func main() {
 		fmt.Printf("Color code of the light's current state is: RGB(%d, %d, %d)\n", r, g, b)
 	}
 
-	// Get the state of a specific capability on the device not implemented by the
-	// library directly yet
+	// Get the color temperature of the light
+	if k, ok := capabilities.Temperature(); ok {
+		fmt.Printf("Color temperature of the light is: %d K\n", k)
+	}
+
+	// Get the state of a specific capability on the device by its API-defined name
 	if k, ok := capabilities.GetState("colorTemperatureK"); ok {
 		// All numerical values should be cast to a float64 before operating on them
 		// due to how the JSON standard defines a number as a floating point value
