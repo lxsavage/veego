@@ -36,6 +36,7 @@ func main() {
 		Sleep(2 * time.Second).
 		Off().
 		Exec()
+
 	if err != nil {
 		log.Fatal(err)
 	}

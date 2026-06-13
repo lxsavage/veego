@@ -1,5 +1,27 @@
 package veego
 
+// Gets the power state of the device
+func (dc deviceCapabilityStates) IsOn() bool {
+	p, ok := dc.GetState("powerSwitch")
+	if !ok {
+		return false
+	}
+
+	// All numbers are parsed as float64 values with the default JSON unmarshaler
+	return p.(float64) != 0
+}
+
+// Get the brightness of the device as a percentage between 0-100
+func (dc deviceCapabilityStates) Brightness() (int, bool) {
+	p, ok := dc.GetState("brightness")
+	if !ok {
+		return 0, false
+	}
+
+	// All numbers are parsed as float64 values with the default JSON unmarshaler
+	return int(p.(float64)), true
+}
+
 // Turn the device off
 func (d Device) Off(c *Controller) error {
 	return d.SendPayload(*c, DevicePayload{
@@ -18,7 +40,7 @@ func (d Device) On(c *Controller) error {
 	})
 }
 
-// Adjust the brightness to a value between 0-100
+// Adjust the brightness of the device to a value between 0-100
 func (d Device) Brightness(c *Controller, b percentage) error {
 	return d.SendPayload(*c, DevicePayload{
 		Type:     TypeRange,
@@ -27,9 +49,7 @@ func (d Device) Brightness(c *Controller, b percentage) error {
 	})
 }
 
-// Turn the device(s) off
-//
-// Deprecated: use Device.Off() instead.
+// Turn the devices off
 func (fl cmdBuilderChain) Off() cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeOnOff,
@@ -38,9 +58,7 @@ func (fl cmdBuilderChain) Off() cmdBuilderChain {
 	})
 }
 
-// Turn the device(s) on
-//
-// Deprecated: use Device.On() instead.
+// Turn the devices on
 func (fl cmdBuilderChain) On() cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeOnOff,
@@ -49,9 +67,7 @@ func (fl cmdBuilderChain) On() cmdBuilderChain {
 	})
 }
 
-// Adjust the brightness to a value between 0-100
-//
-// Deprecated: use Device.Brightness() instead.
+// Adjust the brightness of the devices to a value between 0-100
 func (fl cmdBuilderChain) Brightness(b percentage) cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeRange,

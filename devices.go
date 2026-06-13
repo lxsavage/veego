@@ -108,7 +108,7 @@ func (dcs deviceCapabilityState) String() string {
 	return fmt.Sprintf("<Name: %s, Type: %s, State: %v>", dcs.Instance, dcs.Type, dcs.State)
 }
 
-// Returns the state of a specific capability by its name; the second value is true if found, otherwise false
+// Returns the state of a specific capability by its name; the last return is true if found, otherwise false
 func (dc deviceCapabilityStates) GetState(key string) (any, bool) {
 	for _, cap := range dc {
 		if cap.Instance == key {
@@ -118,15 +118,7 @@ func (dc deviceCapabilityStates) GetState(key string) (any, bool) {
 	return nil, false
 }
 
-func (dc deviceCapabilityStates) IsOn() bool {
-	p, ok := dc.GetState("powerSwitch")
-	if !ok {
-		return false
-	}
-
-	return p.(float64) != 0
-}
-
+// Gets the online status of the device
 func (dc deviceCapabilityStates) IsOnline() bool {
 	o, ok := dc.GetState("online")
 	if !ok {
@@ -134,26 +126,4 @@ func (dc deviceCapabilityStates) IsOnline() bool {
 	}
 
 	return o.(bool)
-}
-
-func (dc deviceCapabilityStates) Color() (uint8, uint8, uint8, bool) {
-	o, ok := dc.GetState("colorRgb")
-	if !ok {
-		return 0, 0, 0, false
-	}
-
-	r, g, b := colorRGB(o.(float64)).Components()
-	return r, g, b, true
-}
-
-// Converts a Device into a builder chain that filters down to only that device;
-// for use with fluent actions
-func (d Device) AsBuilder(c *Controller) cmdBuilderChain {
-	return cmdBuilderChain{
-		filters:     []cmdBuilderFilter{},
-		actions:     []cmdBuilderAction{},
-		memoDevices: []Device{d},
-		controller:  c,
-		memoized:    true,
-	}
 }

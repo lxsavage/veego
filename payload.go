@@ -43,8 +43,8 @@ func (d Device) SendPayload(c Controller, pl DevicePayload) error {
 	return nil
 }
 
-// Send a raw device payload to the API; should only be used if the needed
-// functionality is not yet implemented.
+// Send a raw device payload to the API for each device in the chain; should
+// only be used if the needed functionality is not yet implemented.
 //
 // Note that this payload is sent as the "capability" section of the following
 // API method:
@@ -53,8 +53,6 @@ func (d Device) SendPayload(c Controller, pl DevicePayload) error {
 //
 // See https://developer.govee.com/reference/control-you-devices for more
 // details.
-//
-// Deprecated: use Device.SendPayload() instead.
 func (fl cmdBuilderChain) SendPayload(pl DevicePayload) cmdBuilderChain {
 	cmd := func(c Controller, devs []Device) ([]Device, error) {
 		for i, d := range devs {

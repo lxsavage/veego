@@ -3,6 +3,7 @@ package veego
 import (
 	"errors"
 	"strconv"
+	"time"
 )
 
 type cmdBuilderChain struct {
@@ -54,9 +55,6 @@ func (f cmdBuilderChain) Query() []Device {
 }
 
 // Apply and cache the device/filter portion of the command chain
-//
-// Deprecated: avoid using command chains, and instead direct actions to
-// individual devices instead through .Query()
 func (f cmdBuilderChain) Memoize() cmdBuilderChain {
 	if !f.memoized {
 		devices, err := f.controller.findDevices()
@@ -77,9 +75,6 @@ func (f cmdBuilderChain) Memoize() cmdBuilderChain {
 
 // Execute a command chain, returning an error and stopping if there are any
 // issues with the commands in the chain
-//
-// Deprecated: avoid using command chains, and instead direct actions to
-// individual devices instead through .Query()
 func (f cmdBuilderChain) Exec() error {
 	var devices []Device
 	if f.memoized {
@@ -117,4 +112,15 @@ func (f cmdBuilderChain) Exec() error {
 	}
 
 	return nil
+}
+
+// Pause for a moment
+func (fl cmdBuilderChain) Sleep(t time.Duration) cmdBuilderChain {
+	cmd := func(_ Controller, d []Device) ([]Device, error) {
+		time.Sleep(t)
+		return d, nil
+	}
+
+	fl.actions = append(fl.actions, cmd)
+	return fl
 }

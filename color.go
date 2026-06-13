@@ -18,9 +18,28 @@ func (d Device) Temperature(c *Controller, t colorTemp) error {
 	})
 }
 
-// Set the color of the device(s)
-//
-// Deprecated: avoid using command chains, and instead direct actions to individual devices instead
+// Get the current color of the device, the last return is true if found, otherwise false
+func (dc deviceCapabilityStates) Color() (uint8, uint8, uint8, bool) {
+	o, ok := dc.GetState("colorRgb")
+	if !ok {
+		return 0, 0, 0, false
+	}
+
+	r, g, b := colorRGB(o.(float64)).Components()
+	return r, g, b, true
+}
+
+// Get the current color temperature of the device, the last return is true if found, otherwise false
+func (dc deviceCapabilityStates) Temperature() (int, bool) {
+	k, ok := dc.GetState("colorTemperatureK")
+	if !ok {
+		return 0, false
+	}
+
+	return int(k.(float64)), true
+}
+
+// Set the color of the devices
 func (fl cmdBuilderChain) Color(c colorRGB) cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeColorSetting,
@@ -29,9 +48,7 @@ func (fl cmdBuilderChain) Color(c colorRGB) cmdBuilderChain {
 	})
 }
 
-// Set the color temperature of the device(s)
-//
-// Deprecated: avoid using command chains, and instead direct actions to individual devices instead
+// Set the color temperature of the devices
 func (fl cmdBuilderChain) Temperature(t colorTemp) cmdBuilderChain {
 	return fl.SendPayload(DevicePayload{
 		Type:     TypeColorSetting,
