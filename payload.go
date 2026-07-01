@@ -2,7 +2,6 @@ package veego
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -57,7 +56,7 @@ func (fl cmdBuilderChain) SendPayload(pl DevicePayload) cmdBuilderChain {
 	cmd := func(c Controller, devs []Device) ([]Device, error) {
 		for i, d := range devs {
 			if err := d.SendPayload(c, pl); err != nil {
-				return devs, errors.New(fmt.Sprintf("%d, %v", i, err))
+				return devs, fmt.Errorf("%d, %v", i, err)
 			}
 		}
 		return devs, nil
